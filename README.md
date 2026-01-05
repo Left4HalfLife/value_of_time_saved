@@ -28,14 +28,19 @@ docker-compose up
 
 Then open your browser to `http://localhost:5000`
 
+**Note for Production**: The docker-compose.yml file sets `FLASK_DEBUG=True` for development. For production deployments, remove this environment variable or set it to `False` to disable debug mode.
+
 ### Using Docker directly
 
 ```bash
 # Build the image
 docker build -t value-of-time-saved .
 
-# Run the container
+# Run the container (production mode)
 docker run -p 5000:5000 value-of-time-saved
+
+# Run the container (development mode with debug)
+docker run -p 5000:5000 -e FLASK_DEBUG=True value-of-time-saved
 ```
 
 Then open your browser to `http://localhost:5000`

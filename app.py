@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, make_response
 import json
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
@@ -61,4 +62,7 @@ def calculate():
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Only enable debug mode if explicitly set via environment variable
+    # NEVER enable debug in production!
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ('true', '1', 'yes')
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)

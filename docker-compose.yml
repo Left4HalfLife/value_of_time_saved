@@ -6,7 +6,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - FLASK_DEBUG=1
+      - FLASK_DEBUG=True
     volumes:
       - .:/app
     command: python app.py
