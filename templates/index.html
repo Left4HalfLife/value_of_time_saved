@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value of Time Saved Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-row label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .time-input-group {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .time-input-group label {
+            font-size: 0.85em;
+            font-weight: normal;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-calculate {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-calculate:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-clear:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        .results-section {
+            margin-top: 30px;
+        }
+        
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: #667eea;
+            color: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            font-weight: 600;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .neutral {
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .time-inputs {
+                flex-direction: column;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Value of Time Saved Calculator</h1>
+        <p class="subtitle">Calculate whether paying for a faster option is worth your time</p>
+        
+        <div class="form-section">
+            <form id="calculatorForm">
+                <div class="form-row">
+                    <label>Original Time Taken (Free Option)</label>
+                    <div class="time-inputs">
+                        <div class="time-input-group">
+                            <label>Days</label>
+                            <input type="number" id="original_days" min="0" step="1" value="0">
+                        </div>
+                        <div class="time-input-group">
+                            <label>Hours</label>
+                            <input type="number" id="original_hours" min="0" step="1" value="0">
+                        </div>
+                        <div class="time-input-group">
+                            <label>Minutes</label>
+                            <input type="number" id="original_mins" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <label>Time Taken Instead (With Cost)</label>
+                    <div class="time-inputs">
+                        <div class="time-input-group">
+                            <label>Days</label>
+                            <input type="number" id="cost_days" min="0" step="1" value="0">
+                        </div>
+                        <div class="time-input-group">
+                            <label>Hours</label>
+                            <input type="number" id="cost_hours" min="0" step="1" value="0">
+                        </div>
+                        <div class="time-input-group">
+                            <label>Minutes</label>
+                            <input type="number" id="cost_mins" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <label for="dollar_cost">$ Cost of Faster Option</label>
+                    <input type="number" id="dollar_cost" min="0" step="0.01" value="0" placeholder="e.g., 50.00">
+                </div>
+                
+                <div class="form-row">
+                    <label for="hourly_value">$ Your Hourly Value (Income/hr)</label>
+                    <input type="number" id="hourly_value" min="0" step="0.01" value="0" placeholder="e.g., 25.00">
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn-calculate">Calculate</button>
+                    <button type="button" class="btn-clear" onclick="clearHistory()">Clear History</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="results-section">
+            <h2>Recent Calculations</h2>
+            <div id="resultsTable">
+                <div class="empty-state">No calculations yet. Fill in the form above and click Calculate!</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load calculations from cookie on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCalculations();
+        });
+        
+        // Handle form submission
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                original_days: document.getElementById('original_days').value,
+                original_hours: document.getElementById('original_hours').value,
+                original_mins: document.getElementById('original_mins').value,
+                cost_days: document.getElementById('cost_days').value,
+                cost_hours: document.getElementById('cost_hours').value,
+                cost_mins: document.getElementById('cost_mins').value,
+                dollar_cost: document.getElementById('dollar_cost').value,
+                hourly_value: document.getElementById('hourly_value').value
+            };
+            
+            fetch('/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+                
+                // Save to cookie
+                saveCalculation(data);
+                
+                // Display updated calculations
+                displayCalculations();
+            })
+            .catch(error => {
+                alert('Error calculating: ' + error);
+            });
+        });
+        
+        function saveCalculation(calculation) {
+            let calculations = getCalculations();
+            calculations.unshift(calculation); // Add to beginning
+            
+            // Keep only last 10 calculations
+            if (calculations.length > 10) {
+                calculations = calculations.slice(0, 10);
+            }
+            
+            // Save to cookie (expires in 30 days)
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 30);
+            document.cookie = `calculations=${encodeURIComponent(JSON.stringify(calculations))}; expires=${expiryDate.toUTCString()}; path=/`;
+        }
+        
+        function getCalculations() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const trimmedCookie = cookie.trim();
+                const equalIndex = trimmedCookie.indexOf('=');
+                if (equalIndex === -1) continue;
+                
+                const name = trimmedCookie.substring(0, equalIndex);
+                const value = trimmedCookie.substring(equalIndex + 1);
+                
+                if (name === 'calculations') {
+                    try {
+                        return JSON.parse(decodeURIComponent(value));
+                    } catch (e) {
+                        return [];
+                    }
+                }
+            }
+            return [];
+        }
+        
+        function displayCalculations() {
+            const calculations = getCalculations();
+            const resultsDiv = document.getElementById('resultsTable');
+            
+            if (calculations.length === 0) {
+                resultsDiv.innerHTML = '<div class="empty-state">No calculations yet. Fill in the form above and click Calculate!</div>';
+                return;
+            }
+            
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Original Time</th>
+                            <th>Cost Time</th>
+                            <th>Time Saved (hrs)</th>
+                            <th>$ Cost</th>
+                            <th>$ Hourly Value</th>
+                            <th>Value of Time Saved</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            calculations.forEach(calc => {
+                const netValue = calc.value_of_time_saved - calc.dollar_cost;
+                const valueClass = netValue > 0 ? 'positive' : netValue < 0 ? 'negative' : 'neutral';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${calc.timestamp}</td>
+                        <td>${calc.original_time}</td>
+                        <td>${calc.cost_time}</td>
+                        <td>${calc.time_saved_hours}</td>
+                        <td>$${calc.dollar_cost.toFixed(2)}</td>
+                        <td>$${calc.hourly_value.toFixed(2)}/hr</td>
+                        <td class="${valueClass}">$${calc.value_of_time_saved.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+            
+            resultsDiv.innerHTML = tableHTML;
+        }
+        
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all calculation history?')) {
+                document.cookie = 'calculations=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+                displayCalculations();
+            }
+        }
+    </script>
+</body>
+</html>
